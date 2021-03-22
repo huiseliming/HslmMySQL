@@ -72,3 +72,8 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# MySQL Lib
+!Source/ThirdParty/MySQLConnector/Windows/lib64/*.lib
+!Source/ThirdParty/MySQLConnector/Windows/lib64/*.dll
+!Source/ThirdParty/MySQLConnector/Windows/lib64/*.pdb
