@@ -26,6 +26,7 @@ public class HslmMySQL : ModuleRules
             new string[]
             {
                 "Core",
+                "Json",
                 // ... add other public dependencies that you statically link with here ...
             }
             );
@@ -36,7 +37,8 @@ public class HslmMySQL : ModuleRules
             {
                 "CoreUObject",
                 "Engine",
-                "MySQLConnector"
+                "MySQLConnector",
+                "HslmPlugin",
                 // ... add private dependencies that you statically link with here ...
             }
             );

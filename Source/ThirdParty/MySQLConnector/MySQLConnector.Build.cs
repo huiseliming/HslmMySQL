@@ -11,7 +11,8 @@ public class MySQLConnector : ModuleRules
 
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
-            string MySQLConnectorLibName = "mysqlcppconn8.lib";
+            string MySQLConnectorLibName = "mysqlcppconn.lib";
+            string MySQLConnectorLibName2 = "mysqlcppconn8.lib";
             string MySQLConnectorDllName = "mysqlcppconn8-2-vs14.dll";
             string MySQLConnectorIncludePath = Path.Combine(ModuleDirectory, "Windows", "include");
             string MySQLConnectorLibraryPath = Path.Combine(ModuleDirectory, "Windows", "lib64");
@@ -22,7 +23,8 @@ public class MySQLConnector : ModuleRules
 
             // Add the import library
             PublicAdditionalLibraries.Add(Path.Combine(MySQLConnectorLibraryPath, MySQLConnectorLibName));
-
+            PublicAdditionalLibraries.Add(Path.Combine(MySQLConnectorLibraryPath, MySQLConnectorLibName2));
+            
             // Delay-load the DLL, so we can load it from the right place first
             PublicDelayLoadDLLs.Add(MySQLConnectorDllName);
 

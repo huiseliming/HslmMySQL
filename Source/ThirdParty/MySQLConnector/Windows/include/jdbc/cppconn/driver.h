@@ -65,17 +65,19 @@ public:
 
 } /* namespace sql */
 
-
-CPPCONN_PUBLIC_FUNC void check(const std::string &);
-CPPCONN_PUBLIC_FUNC void check(const std::map<std::string,std::string> &);
-
+// For Unreal check macro compile BEGIN
+//CPPCONN_PUBLIC_FUNC void check(const std::string &);
+//CPPCONN_PUBLIC_FUNC void check(const std::map<std::string,std::string> &);
+// For Unreal check macro compile END
 /*
   Checks if user standard lib is compatible with connector one
 */
 inline static void check_lib()
 {
-  check(std::string{});
-  check(std::map<std::string,std::string>{});
+  // For Unreal check macro compile BEGIN
+  //check(std::string{});
+  //check(std::map<std::string,std::string>{});
+  // For Unreal check macro compile END
 }
 
 extern "C"
