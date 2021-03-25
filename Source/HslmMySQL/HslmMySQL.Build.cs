@@ -38,7 +38,6 @@ public class HslmMySQL : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "MySQLConnector",
-                "HslmPlugin",
                 // ... add private dependencies that you statically link with here ...
             }
             );

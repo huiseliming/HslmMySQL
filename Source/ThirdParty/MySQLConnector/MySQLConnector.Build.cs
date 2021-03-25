@@ -1,10 +1,35 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
+using System;
 using System.IO;
+using Tools.DotNETCommon;
 using UnrealBuildTool;
 
 public class MySQLConnector : ModuleRules
 {
+    
+    public string GetUProjectPath()
+    {
+        //Change this according to your module's relative location to your project file. If there is any better way to do this I'm interested!
+        //Assuming Source/ThirdParty/YourLib/
+        return Directory.GetParent(ModuleDirectory).Parent.Parent.FullName;
+    }
+
+    private void CopyToBinaries(string Filepath, ReadOnlyTargetRules Target)
+    {
+        
+        string binariesDir = Path.Combine(GetUProjectPath(), "Binaries", Target.Platform.ToString());
+        string filename = Path.GetFileName(Filepath);
+        if (!Directory.Exists(binariesDir))
+            Directory.CreateDirectory(binariesDir);
+        //Console.WriteLine(Filepath);
+        //Console.WriteLine(Path.Combine(binariesDir, filename));
+        if (!File.Exists(Path.Combine(binariesDir, filename)))
+        {
+            File.Copy(Filepath, Path.Combine(binariesDir, filename), true);
+        }
+    }
+    
     public MySQLConnector(ReadOnlyTargetRules Target) : base(Target)
     {
         Type = ModuleType.External;
@@ -12,8 +37,11 @@ public class MySQLConnector : ModuleRules
         if (Target.Platform == UnrealTargetPlatform.Win64)
         {
             string MySQLConnectorLibName = "mysqlcppconn.lib";
-            string MySQLConnectorLibName2 = "mysqlcppconn8.lib";
-            string MySQLConnectorDllName = "mysqlcppconn8-2-vs14.dll";
+            string MySQLConnector8LibName = "mysqlcppconn8.lib";
+            string CryptoDllName = "libcrypto-1_1-x64.dll";
+            string SSLDllName = "libssl-1_1-x64.dll";
+            //string MySQLConnector8DllName = "mysqlcppconn8-2-vs14.dll";
+            string MySQLConnector9DllName = "mysqlcppconn-9-vs14.dll";
             string MySQLConnectorIncludePath = Path.Combine(ModuleDirectory, "Windows", "include");
             string MySQLConnectorLibraryPath = Path.Combine(ModuleDirectory, "Windows", "lib64");
 
@@ -23,13 +51,20 @@ public class MySQLConnector : ModuleRules
 
             // Add the import library
             PublicAdditionalLibraries.Add(Path.Combine(MySQLConnectorLibraryPath, MySQLConnectorLibName));
-            PublicAdditionalLibraries.Add(Path.Combine(MySQLConnectorLibraryPath, MySQLConnectorLibName2));
+            PublicAdditionalLibraries.Add(Path.Combine(MySQLConnectorLibraryPath, MySQLConnector8LibName));
             
             // Delay-load the DLL, so we can load it from the right place first
-            PublicDelayLoadDLLs.Add(MySQLConnectorDllName);
+            PublicDelayLoadDLLs.Add(CryptoDllName);
+            PublicDelayLoadDLLs.Add(SSLDllName);
+            PublicDelayLoadDLLs.Add(MySQLConnector9DllName);
 
             // Ensure that the DLL is staged along with the executable
-            RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + MySQLConnectorDllName);
+            RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + CryptoDllName);
+            RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + SSLDllName);
+            RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + MySQLConnector9DllName);
+            CopyToBinaries(Path.Combine(MySQLConnectorLibraryPath, SSLDllName), Target);
+            CopyToBinaries(Path.Combine(MySQLConnectorLibraryPath, CryptoDllName), Target);
+            CopyToBinaries(Path.Combine(MySQLConnectorLibraryPath, MySQLConnector9DllName), Target);
         }
     }
 }

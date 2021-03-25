@@ -25,12 +25,16 @@ public:
 	bool IsClosed() const;
 	
 	void CloseConnection();
+
+	bool Execute(FString InSQL);
 	
 	bool ExecuteQuery(FString InSQL, FMySQLResultSet& OutResultSet);
-	bool ExecuteUpdate(FString InSQL, TArray<FJsonObject> InValues);
+	
+	int32 ExecuteUpdate(FString InSQL, TArray<FName> InTypes, TArray<TSharedPtr<FJsonValue>> InValues);
 
 	FString URI;
 	
 	struct FImpl;
 	FImpl* Impl;
+	
 };
