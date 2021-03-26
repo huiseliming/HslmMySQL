@@ -106,7 +106,6 @@ bool UMySQLConnection::ExecuteQuery(FString InDBName, FString InSQL, TArray<FSQL
 		const uint32 ColumnCount = ResultSetMetaData->getColumnCount();
 		while (ResultSet->next())
 		{
-			FJsonObject RowObject;
 			for (uint32 i = 1; i < ColumnCount + 1; ++i)
 			{
 				FSQLTableRow SQLTableRow;

@@ -26,7 +26,6 @@ public class HslmMySQL : ModuleRules
             new string[]
             {
                 "Core",
-                "Json",
                 // ... add other public dependencies that you statically link with here ...
             }
             );
