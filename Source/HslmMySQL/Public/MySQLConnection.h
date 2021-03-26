@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MySQLResultSet.h"
+#include "SQLDataBase.h"
 #include "UObject/Object.h"
 #include "MySQLConnection.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class HSLMMYSQL_API UMySQLConnection : public UObject
 {
 	GENERATED_BODY()
@@ -19,18 +19,24 @@ public:
 	
 	UMySQLConnection(const FObjectInitializer& ObjectInitializer);
 	~UMySQLConnection();
-
+	
+	UFUNCTION(BlueprintCallable, Category="Hslm|MySQLConnection")
 	bool ConnectToServer(FString Host, int32 Port, FString User, FString Password, FString DataBase = TEXT(""));
 	
+	UFUNCTION(BlueprintPure, Category="Hslm|MySQLConnection")
 	bool IsClosed() const;
 	
+	UFUNCTION(BlueprintCallable, Category="Hslm|MySQLConnection")
 	void CloseConnection();
+	
+	UFUNCTION(BlueprintCallable, Category="Hslm|MySQLConnection")
+	bool Execute(FString InDBName, FString InSQL);
 
-	bool Execute(FString InSQL);
+	UFUNCTION(BlueprintCallable, Category="Hslm|MySQLConnection")
+	bool ExecuteQuery(FString InDBName, FString InSQL, TArray<FSQLTableRow>& OutResultSet);
 	
-	bool ExecuteQuery(FString InSQL, FMySQLResultSet& OutResultSet);
-	
-	int32 ExecuteUpdate(FString InSQL, TArray<FName> InTypes, TArray<TSharedPtr<FJsonValue>> InValues);
+	UFUNCTION(BlueprintCallable, Category="Hslm|MySQLConnection")
+	int32 ExecuteUpdate(FString InDBName, FString InSQL, TArray<FSQLData> InSQLTableRow);
 
 	FString URI;
 	
