@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
+
 class FHslmMySQLModule : public IModuleInterface
 {
 public:
@@ -23,9 +24,6 @@ public:
 		return FModuleManager::Get().IsModuleLoaded("HslmMySQL");
 	}
 
-
-
-	
 };
 
 DECLARE_LOG_CATEGORY_EXTERN(LogHslmMySQL, Log, All);

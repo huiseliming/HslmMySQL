@@ -60,8 +60,8 @@ public class MySQLConnector : ModuleRules
 
             // Ensure that the DLL is staged along with the executable
             // Copy Dll For Run Standalone (Packaged)
-            RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + CryptoDllName);
             RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + SSLDllName);
+            RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + CryptoDllName);
             RuntimeDependencies.Add("$(PluginDir)/Binaries/ThirdParty/MySQLConnector/Win64/" + MySQLConnectorDllName);
             // Copy Dll For Run Editor
             CopyToBinaries(Path.Combine(MySQLConnectorLibraryPath, SSLDllName), Target);

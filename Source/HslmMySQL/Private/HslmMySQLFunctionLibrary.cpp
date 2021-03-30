@@ -13,6 +13,11 @@ FSQLData UHslmMySQLFunctionLibrary::MakeSQLDataInteger64(int64 InInteger64)
 	return FSQLData(InInteger64);
 }
 
+FSQLData UHslmMySQLFunctionLibrary::MakeSQLDataDecimal(FString InDecimal)
+{
+	return FSQLData(InDecimal, ESQLData::Decimal);
+}
+
 FSQLData UHslmMySQLFunctionLibrary::MakeSQLDataFloat(float InFloat)
 {
 	return FSQLData(InFloat);
@@ -26,6 +31,11 @@ FSQLData UHslmMySQLFunctionLibrary::MakeSQLDataString(FString InString)
 FSQLData UHslmMySQLFunctionLibrary::MakeSQLDataBinary(TArray<uint8> InBinary)
 {
 	return FSQLData(InBinary);
+}
+
+FSQLData UHslmMySQLFunctionLibrary::MakeSQLDataDateTime(FDateTime InDateTime)
+{
+	return FSQLData(InDateTime);
 }
 
 ESQLData UHslmMySQLFunctionLibrary::GetType(const FSQLData& Value)
@@ -58,7 +68,7 @@ TArray<uint8> UHslmMySQLFunctionLibrary::GetBinary(const FSQLData& Value)
 	return Value.GetBinary();
 }
 
-FDateTime UHslmMySQLFunctionLibrary::ToDate(const FSQLData& Value)
+FDateTime UHslmMySQLFunctionLibrary::ToDateTime(const FSQLData& Value)
 {
-	return Value.GetDate();
+	return Value.GetDateTime();
 }

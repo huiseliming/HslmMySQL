@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "SQLDataBase.h"
+#include "SQLData.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "HslmMySQLFunctionLibrary.generated.h"
 
@@ -20,6 +20,8 @@ class HSLMMYSQL_API UHslmMySQLFunctionLibrary : public UBlueprintFunctionLibrary
     static FSQLData MakeSQLDataInteger(int32 InInteger);
 	UFUNCTION(BlueprintPure, meta = (Keywords = "construct build", NativeMakeFunc, DisplayName="Make SQLData (Integer64)"), Category = "Hslm|MySQLFunctionLibrary|SQLData")
 	static FSQLData MakeSQLDataInteger64(int64 InInteger64);
+	UFUNCTION(BlueprintPure, meta = (Keywords = "construct build", NativeMakeFunc, DisplayName="Make SQLData (Decimal)"), Category = "Hslm|MySQLFunctionLibrary|SQLData")
+	static FSQLData MakeSQLDataDecimal(FString InDecimal);
 	UFUNCTION(BlueprintPure, meta = (Keywords = "construct build", NativeMakeFunc, DisplayName="Make SQLData (Float)"), Category = "Hslm|MySQLFunctionLibrary|SQLData")
 	static FSQLData MakeSQLDataFloat(float InFloat);
 	// UFUNCTION(BlueprintPure, meta = (Keywords = "construct build", NativeMakeFunc, DisplayName="Make SQLData (Double)"), Category = "Hslm|MySQLFunctionLibrary|SQLData")
@@ -28,6 +30,9 @@ class HSLMMYSQL_API UHslmMySQLFunctionLibrary : public UBlueprintFunctionLibrary
 	static FSQLData MakeSQLDataString(FString InString);
 	UFUNCTION(BlueprintPure, meta = (Keywords = "construct build", NativeMakeFunc, DisplayName="Make SQLData (Binary)"), Category = "Hslm|MySQLFunctionLibrary|SQLData")
 	static FSQLData MakeSQLDataBinary(TArray<uint8> InBinary);
+	UFUNCTION(BlueprintPure, meta = (Keywords = "construct build", NativeMakeFunc, DisplayName="Make SQLData (DateTime)"), Category = "Hslm|MySQLFunctionLibrary|SQLData")
+	static FSQLData MakeSQLDataDateTime(FDateTime InDateTime);
+
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = " Get Type", CompactNodeTitle = "->", BlueprintAutocast), Category = "Hslm|MySQLFunctionLibrary")
 	static ESQLData GetType( UPARAM(ref) const FSQLData& Value );
@@ -43,6 +48,6 @@ class HSLMMYSQL_API UHslmMySQLFunctionLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Convert To Binary", CompactNodeTitle = "->", BlueprintAutocast), Category = "Hslm|MySQLFunctionLibrary")
 	static TArray<uint8> GetBinary( UPARAM(ref) const FSQLData& Value );
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Convert To Date", CompactNodeTitle = "->", BlueprintAutocast), Category = "Hslm|MySQLFunctionLibrary")
-	static FDateTime ToDate( UPARAM(ref) const FSQLData& Value );
+	static FDateTime ToDateTime( UPARAM(ref) const FSQLData& Value );
 	
 };
