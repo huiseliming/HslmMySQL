@@ -1,23 +1,24 @@
-﻿#include "MySQLRunnable.h"
+﻿#include "SQLRunnable.h"
 #include "HslmDefine.h"
 #include "HslmMySQL.h"
-#include "MySQLConnection.h"
 #include "jdbc/cppconn/connection.h"
 
-FMySQLRunnable::FMySQLRunnable(UMySQLConnection* MySQLConnection)
-	: SQLConnection(nullptr)
-    , MySQLConnectionWeakPtr(MySQLConnection)
-	, KillSignal(false)
+FSQLRunnable::FSQLRunnable(const FString& Host, const int32 Port, const FString& User, const FString& Password,
+	const FString& DataBase)
 {
-	Thread = FRunnableThread::Create(this, TEXT("RNGThread") , 0, TPri_BelowNormal);
+	URI = "tcp://" + Host + ":" + FString::FromInt(Port) + "/" + DataBase;
+	this->User = User;
+	this->Password = Password;
+	this->DataBase = DataBase;
+	Thread = FRunnableThread::Create(this, TEXT("SQLThread") , 0, TPri_BelowNormal);
 }
 
-FMySQLRunnable::~FMySQLRunnable()
+FSQLRunnable::~FSQLRunnable()
 {
 	EnsureCompletion();
 }
 
-void FMySQLRunnable::EnsureCompletion()
+void FSQLRunnable::EnsureCompletion()
 {
 	Stop();
 	if (Thread)
@@ -27,34 +28,24 @@ void FMySQLRunnable::EnsureCompletion()
 	}
 }
 
-bool FMySQLRunnable::EnqueueTaskContext(FMySQLTaskContextSharedPtr SQLContextPtr)
+bool FSQLRunnable::EnqueueTaskContext(FSQLTaskContextPtr SQLContextPtr)
 {
 	return TaskContextQueue.Enqueue(SQLContextPtr);
 }
 
-std::unique_ptr<sql::Connection>& FMySQLRunnable::GetSQLConnection()
-{
-	return SQLConnection;
-}
-
-TWeakObjectPtr<UMySQLConnection> FMySQLRunnable::GetMySQLConnectionWeakPtr()
-{
-	return MySQLConnectionWeakPtr;
-}
-
-bool FMySQLRunnable::Init()
+bool FSQLRunnable::Init()
 {
 	UE_LOG(LogHslmMySQL, Log, TEXT("[%s] MySQLRunnable Init"), *UE__FUNC__LINE__);
 	return true;
 }
 
-uint32 FMySQLRunnable::Run()
+uint32 FSQLRunnable::Run()
 {
 	while (!KillSignal)
 	{
 		while (!TaskContextQueue.IsEmpty())
 		{
-			FMySQLTaskContextSharedPtr TaskContext = *TaskContextQueue.Peek();
+			FSQLTaskContextPtr TaskContext = *TaskContextQueue.Peek();
 			TaskContext->Task(this, TaskContext);
 			TaskContextQueue.Pop();
 		}
@@ -63,12 +54,12 @@ uint32 FMySQLRunnable::Run()
 	return 0;
 }
 
-void FMySQLRunnable::Stop()
+void FSQLRunnable::Stop()
 {
 	KillSignal = true;
 }
 
-void FMySQLRunnable::Exit()
+void FSQLRunnable::Exit()
 {
 	if(SQLConnection)
 	{

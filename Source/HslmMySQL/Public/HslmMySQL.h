@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
-
+class USQLConnection;
 
 class FHslmMySQLModule : public IModuleInterface
 {
@@ -24,6 +24,9 @@ public:
 		return FModuleManager::Get().IsModuleLoaded("HslmMySQL");
 	}
 
+	USQLConnection* GetConnection(FString Host, int32 Port, FString User, FString Password, FString DataBase);
+	
+	TMap<FString, USQLConnection*> SQLConnections;
 };
 
 DECLARE_LOG_CATEGORY_EXTERN(LogHslmMySQL, Log, All);

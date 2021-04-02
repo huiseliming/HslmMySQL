@@ -1,8 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "HslmMySQL.h"
-#include "HslmDefine.h"
 #include "SQLData.generated.h"
 
 UENUM(BlueprintType)
@@ -164,18 +162,7 @@ struct HSLMMYSQL_API FSQLData
 	FSQLData(int64 InInteger64) { SQLData = MakeShared<FSQLDataInteger>(InInteger64); }
 	FSQLData(float InFloat){ SQLData = MakeShared<FSQLDataFloat>(InFloat); }
 	FSQLData(double InDouble){ SQLData = MakeShared<FSQLDataFloat>(InDouble); }
-	FSQLData(FString InString, ESQLData InSQLData = ESQLData::String)
-	{
-		if (InSQLData == ESQLData::String)
-		{
-			SQLData = MakeShared<FSQLDataString>(InString);
-		}else if(InSQLData == ESQLData::Decimal)
-		{
-			SQLData = MakeShared<FSQLDataDecimal>(InString);
-		}else{
-			UE_LOG(LogHslmMySQL, Fatal, TEXT("[%s] [tan90]"), *UE__FUNC__LINE__)
-		}
-	}
+	FSQLData(FString InString, ESQLData InSQLData = ESQLData::String);
 	FSQLData(const TArray<uint8>& InBinary){ SQLData = MakeShared<FSQLDataBinary>(InBinary); }
 	FSQLData(TArray<uint8>&& InBinary){ SQLData = MakeShared<FSQLDataBinary>(MoveTemp(InBinary)); }
 	FSQLData(FDateTime& InDateTime){ SQLData = MakeShared<FSQLDataDateTime>(InDateTime); }

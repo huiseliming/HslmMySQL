@@ -2,30 +2,37 @@
 
 #include "CoreMinimal.h"
 
-#include <memory>
-
-struct FMySQLTaskContext;
-typedef TSharedPtr<FMySQLTaskContext, ESPMode::ThreadSafe> FMySQLTaskContextSharedPtr;
-class UMySQLConnection;
-
+class FSQLRunnable;
+class USQLQueryProxy;
+struct FSQLTaskContext;
+typedef TSharedPtr<FSQLTaskContext> FSQLTaskContextPtr;
 namespace sql
 {
 	class Connection;
 }
 
-class FMySQLRunnable : public FRunnable
+struct FSQLTaskContext
+{
+	TWeakObjectPtr<USQLQueryProxy> SQLQueryProxy;
+	TFunction<void(FSQLRunnable*, FSQLTaskContextPtr)> Task;
+};
+
+class FSQLRunnable : public FRunnable
 {
 public:
-	FMySQLRunnable() = delete;
-	FMySQLRunnable(UMySQLConnection* MySQLConnection); 
-	~FMySQLRunnable();
+	FSQLRunnable() = delete;
+	FSQLRunnable(const FString& Host, const int32 Port, const FString& User, const FString& Password, const FString& DataBase);
+	~FSQLRunnable();
 	
 	void EnsureCompletion();
 
-	bool EnqueueTaskContext(FMySQLTaskContextSharedPtr SQLContextPtr);
+	bool EnqueueTaskContext(FSQLTaskContextPtr SQLContextPtr);
 
-	std::unique_ptr<sql::Connection>& GetSQLConnection();
-	TWeakObjectPtr<UMySQLConnection> GetMySQLConnectionWeakPtr();
+	FString URI;
+	FString User;
+	FString Password;
+	FString DataBase;
+	TUniquePtr<sql::Connection> SQLConnection;
 
 private:
 	virtual bool Init() override;
@@ -33,9 +40,7 @@ private:
 	virtual void Stop() override;
 	virtual void Exit() override;
 
-	TQueue<FMySQLTaskContextSharedPtr> TaskContextQueue;
-	std::unique_ptr<sql::Connection> SQLConnection;
-	TWeakObjectPtr<UMySQLConnection> MySQLConnectionWeakPtr;
+	TQueue<FSQLTaskContextPtr> TaskContextQueue;
 	FThreadSafeBool KillSignal;
 	FRunnableThread* Thread;
 };

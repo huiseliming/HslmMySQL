@@ -11,7 +11,7 @@
 #include "mysql/jdbc.h"
 
 
-static ESQLData ConvertSQLType(uint32 InDataType)
+static ESQLData ConvertSQLType2(uint32 InDataType)
 {
 	switch (InDataType)
 	{
@@ -177,7 +177,7 @@ void UMySQLConnection::ExecuteQuery(USQLQuery* Query)
 				{
 					std::string UTF8ColumnName = ResultSetMetaData->getColumnName(i);
 					const int32 ColumnType = ResultSetMetaData->getColumnType(i);
-					SQLResultSet.MetaDatas.Add(FSQLMateData{FString(UTF8_TO_TCHAR(UTF8ColumnName.c_str())),ConvertSQLType(ColumnType)});
+					SQLResultSet.MetaDatas.Add(FSQLMateData{FString(UTF8_TO_TCHAR(UTF8ColumnName.c_str())),ConvertSQLType2(ColumnType)});
 				}
 				while (ResultSet->next())
 				{

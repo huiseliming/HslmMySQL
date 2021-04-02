@@ -18,7 +18,12 @@
 		{
 			"Name": "HslmMySQL",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name" : "HslmMySQLEditor",
+			"Type" : "UncookedOnly",
+			"LoadingPhase" : "PreDefault"
 		}
 	]
 }
