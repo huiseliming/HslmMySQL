@@ -1,8 +1,6 @@
 # HslmMySQL
 MySQL Connector UnrealPlugin 
 
-this unreal plugin 
-
 This unreal plugin provides a simple blueprint asynchronous nodes to connect to the mysql database to execute SQL
 
 Blueprint Node Example
