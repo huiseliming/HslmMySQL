@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "MySQLConnection.h"
 #include "UObject/Object.h"
 #include "SQLData.h"
 #include "SQLQueryProxy.generated.h"
